@@ -7,10 +7,11 @@
     )
 }}
 
-{% if is_incremental() %} 
-  and rank > (select max(rank) from {{this}})
-{% endif %}
+
 
 select *
 from {{ ref('my_first_dbt_model') }}
-
+where
+{% if is_incremental() %} 
+rank > (select max(rank) from {{this}})
+{% endif %}
